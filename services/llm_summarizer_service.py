@@ -29,9 +29,7 @@ class LLMSummarizer:
         
         # Configure Gemini
         genai.configure(api_key=self.api_key)
-        
         self.model = genai.GenerativeModel("models/gemini-1.5-flash")
-        print("✅ Gemini LLM initialized successfully")
 
     def summarize_transactions(self, transactions: List[Dict], 
                                max_transactions: int = 50,
