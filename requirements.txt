@@ -15,7 +15,7 @@ numpy>=1.26.2
 faker>=20.1.0
 
 # LLM Integration
-google-generativeai>=0.3.2
+google-generativeai>=0.5.2
 
 # Environment Management
 python-dotenv>=1.0.0
