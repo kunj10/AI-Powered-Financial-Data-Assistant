@@ -336,14 +336,5 @@ EMBEDDING_MODEL=all-MiniLM-L6-v2
 
 ---
 
-## 📞 Contact
-
-For questions or issues:
-- **API Documentation:** http://localhost:8000/docs
-- **GitHub Issues:** Open an issue in the repository
-
----
-
-**Version:** 1.0.0  
-**Status:** Production Ready ✅  
+**Version:** 1.0.0    
 **Assignment Completion:** 100% + Bonus Features
