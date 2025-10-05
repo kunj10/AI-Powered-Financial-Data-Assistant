@@ -1,0 +1,19 @@
+# Virtual Environment
+venv/
+
+# Environment Variables (contains API keys)
+.env
+
+# Python Cache
+__pycache__/
+
+# Generated Data (created by setup.py)
+data/transactions.json
+embeddings/vector_store.faiss
+embeddings/transactions.pkl
+
+# OS
+.DS_Store
+
+# Testing
+.pytest_cache/
