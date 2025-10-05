@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 # Add parent directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -13,43 +14,34 @@ from config import settings
 from services import VectorSearchService, TransactionSummarizer, LLMSummarizer
 from api.routes import search, summary, transactions
 
-# Initialize FastAPI app
-app = FastAPI(
-    title=settings.APP_TITLE,
-    description=settings.APP_DESCRIPTION,
-    version=settings.APP_VERSION
-)
-
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Initialize services
-search_service = VectorSearchService()
-rule_summarizer = TransactionSummarizer()
+# Initialize services (will be populated on startup)
+search_service = None
+rule_summarizer = None
 llm_summarizer = None
 
-# Try to initialize LLM summarizer
-try:
-    llm_summarizer = LLMSummarizer()
-    print("✅ Gemini LLM initialized successfully")
-except Exception as e:
-    print(f"⚠️  LLM Summarizer not available: {e}")
 
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize services on startup."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for startup and shutdown events."""
+    global search_service, rule_summarizer, llm_summarizer
+    
+    # Startup
     print("\n🚀 Starting AI Financial Data Assistant API...")
+    
+    # Initialize services
+    search_service = VectorSearchService()
+    rule_summarizer = TransactionSummarizer()
+    
+    # Try to initialize LLM summarizer
+    try:
+        llm_summarizer = LLMSummarizer()
+        print("✅ Gemini LLM initialized successfully")
+    except Exception as e:
+        print(f"⚠️  LLM Summarizer not available: {e}")
     
     # Initialize search service
     try:
-        # The pickle file is named transactions.pkl in the same directory as the FAISS index
+        # The pickle file is named transactions.pkl in the same directory
         import os
         embeddings_dir = os.path.dirname(settings.VECTOR_DB_PATH)
         transactions_pkl_path = os.path.join(embeddings_dir, 'transactions.pkl')
@@ -67,7 +59,31 @@ async def startup_event():
         
     except Exception as e:
         print(f"❌ Error initializing search service: {e}")
-        search_service.is_ready = False
+        if search_service:
+            search_service.is_ready = False
+    
+    yield  # Application runs here
+    
+    # Shutdown (cleanup if needed)
+    print("\n👋 Shutting down AI Financial Data Assistant API...")
+
+
+# Initialize FastAPI app with lifespan
+app = FastAPI(
+    title=settings.APP_TITLE,
+    description=settings.APP_DESCRIPTION,
+    version=settings.APP_VERSION,
+    lifespan=lifespan
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Health check endpoint
