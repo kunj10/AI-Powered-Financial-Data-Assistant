@@ -1,0 +1,443 @@
+{
+  "info": {
+    "name": "AI Financial Data Assistant",
+    "_postman_id": "financial-assistant-api",
+    "description": "Complete API collection for AI Financial Data Assistant with semantic search and LLM-powered insights",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Metadata",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Check if the API is running and services are initialized"
+          }
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            },
+            "description": "Get list of all transaction categories"
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            },
+            "description": "Get list of all users in the system"
+          }
+        },
+        {
+          "name": "Get Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "stats"]
+            },
+            "description": "Get overall transaction statistics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search & Retrieval",
+      "item": [
+        {
+          "name": "Semantic Search - Basic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"restaurant expenses\",\n  \"top_k\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/search",
+              "host": ["{{base_url}}"],
+              "path": ["api", "search"]
+            },
+            "description": "Basic semantic search for restaurant expenses"
+          }
+        },
+        {
+          "name": "Semantic Search - With Filters",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"travel and hotel bookings\",\n  \"top_k\": 5,\n  \"category\": \"Travel\",\n  \"min_amount\": 5000,\n  \"max_amount\": 50000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/search",
+              "host": ["{{base_url}}"],
+              "path": ["api", "search"]
+            },
+            "description": "Search with category and amount filters"
+          }
+        },
+        {
+          "name": "Semantic Search - User Specific",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"shopping and entertainment\",\n  \"top_k\": 10,\n  \"user_id\": \"USER001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/search",
+              "host": ["{{base_url}}"],
+              "path": ["api", "search"]
+            },
+            "description": "Search transactions for specific user"
+          }
+        },
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transactions?limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Get all transactions with limit"
+          }
+        },
+        {
+          "name": "Get User Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transactions?user_id=USER001&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "USER001"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Get transactions for specific user"
+          }
+        },
+        {
+          "name": "Get Category Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transactions?category=Food & Dining&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Food & Dining"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Get transactions by category"
+          }
+        },
+        {
+          "name": "Get Transactions with Pagination",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transactions?limit=20&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Number of transactions per page"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of transactions to skip"
+                }
+              ]
+            },
+            "description": "Get transactions with pagination support. Use offset to navigate pages."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics & Summaries",
+      "item": [
+        {
+          "name": "Rule-Based Summary - All Transactions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limit\": 100\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summary"]
+            },
+            "description": "Get statistical summary of all transactions"
+          }
+        },
+        {
+          "name": "Rule-Based Summary - By User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"USER001\",\n  \"limit\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summary"]
+            },
+            "description": "Get summary for specific user"
+          }
+        },
+        {
+          "name": "Rule-Based Summary - By Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Food & Dining\",\n  \"limit\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summary"]
+            },
+            "description": "Get summary for specific category"
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI-Powered Features",
+      "item": [
+        {
+          "name": "LLM Summarize - All Transactions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limit\": 30,\n  \"use_llm\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summarize",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summarize"]
+            },
+            "description": "Get AI-generated summary using Google Gemini"
+          }
+        },
+        {
+          "name": "LLM Summarize - By User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"USER001\",\n  \"limit\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summarize",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summarize"]
+            },
+            "description": "Get AI summary for specific user"
+          }
+        },
+        {
+          "name": "LLM Summarize - By Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Travel\",\n  \"limit\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/summarize",
+              "host": ["{{base_url}}"],
+              "path": ["api", "summarize"]
+            },
+            "description": "Get AI analysis for specific category"
+          }
+        },
+        {
+          "name": "Ask Question - General",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What are my biggest expenses this month?\",\n  \"context_limit\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask"]
+            },
+            "description": "Ask questions about transactions using AI"
+          }
+        },
+        {
+          "name": "Ask Question - Spending Patterns",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"How can I reduce my spending on food and dining?\",\n  \"context_limit\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask"]
+            },
+            "description": "Get AI recommendations for spending optimization"
+          }
+        },
+        {
+          "name": "Ask Question - Income Analysis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"What are my income sources and how much did I earn?\",\n  \"context_limit\": 50\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ask",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ask"]
+            },
+            "description": "Analyze income transactions"
+          }
+        }
+      ]
+    }
+  ]
+}
