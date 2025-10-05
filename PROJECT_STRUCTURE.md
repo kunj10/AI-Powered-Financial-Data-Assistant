@@ -179,12 +179,6 @@ Response to Client
 - 3-5 concurrent users
 - Single-server deployment
 
-**Scaling Options:**
-- Use IndexIVFFlat for millions of vectors
-- Add Redis for caching
-- Deploy with load balancer
-- GPU acceleration for embeddings
-
 ---
 
 ## ✅ Design Patterns
