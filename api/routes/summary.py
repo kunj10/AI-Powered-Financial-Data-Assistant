@@ -88,7 +88,7 @@ async def ai_summarize(request: SummarizeRequest):
         return {
             "summary": summary,
             "transaction_count": len(transactions),
-            "model": "gemini-1.5-flash"
+            "model": "models/gemini-1.5-flash"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -114,8 +114,8 @@ async def ask_question(request: AskRequest):
         # Get recent transactions for context
         transactions = search_service.embedding_service.transactions[:request.context_limit]
         
-        # Get AI answer
-        answer = llm_summarizer.answer_question(request.question, transactions)
+        # Get AI answer 
+        answer = llm_summarizer.answer_question(transactions, request.question)
         
         return {
             "question": request.question,
