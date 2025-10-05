@@ -62,9 +62,9 @@ async def lifespan(app: FastAPI):
         if search_service:
             search_service.is_ready = False
     
-    yield  # Application runs here
+    yield
     
-    # Shutdown (cleanup if needed)
+    # Shutdown
     print("\n👋 Shutting down AI Financial Data Assistant API...")
 
 
