@@ -82,13 +82,12 @@ async def ai_summarize(request: SummarizeRequest):
         else:
             transactions = search_service.embedding_service.transactions[:request.limit]
         
-        # Generate AI summary
         summary = llm_summarizer.summarize_transactions(transactions)
         
         return {
             "summary": summary,
             "transaction_count": len(transactions),
-            "model": "models/gemini-1.5-flash"
+            "model": "gemini-2.0-flash-exp"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

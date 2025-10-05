@@ -23,13 +23,12 @@ class LLMSummarizer:
             api_key: Google API key (if not provided, reads from environment)
         """
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
-        
         if not self.api_key:
             raise ValueError("Google API key not found. Set GOOGLE_API_KEY environment variable.")
         
         # Configure Gemini
         genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel("models/gemini-1.5-flash")
+        self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
     def summarize_transactions(self, transactions: List[Dict], 
                                max_transactions: int = 50,
